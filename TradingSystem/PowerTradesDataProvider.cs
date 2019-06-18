@@ -16,7 +16,7 @@ namespace TradingSystem
             _tradingService = new TradingService();
         }
 
-        public IEnumerable<PowerTrade> GetData(DateTime date)
+        public IEnumerable<PowerTrade> GetTrades(DateTime date)
         {
             try
             {

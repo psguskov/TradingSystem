@@ -11,9 +11,11 @@ namespace TradingSystem
         public PowerTrade(int periodsCount)
         {
             Volumes = new double[periodsCount];
+            CreatedDate = DateTime.Now;
         }
 
         public DateTime Date { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public double[] Volumes { get; set; }
 
 

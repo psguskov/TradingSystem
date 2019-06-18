@@ -11,19 +11,13 @@ namespace TradingSystem
 {
     public class PowerTradesReportExporter : IPowerTradesReportExporter
     {
-        public void Export(PowerTrade aggregatedTrade)
+        public void Export(PowerTrade aggregatedTrade, string directoryPath)
         {
             try
             {
                 var data = EnrichData(aggregatedTrade);
-                var directoryPath = ConfigurationManager.AppSettings["directoryPath"];
-                string fileNameSuffix = ConfigurationManager.AppSettings["fileNameSuffix"];
-                string dateDayPart = aggregatedTrade.Date.ToString("yyyyMMdd");
-                string dareTimePart = aggregatedTrade.Date.TimeOfDay.ToString("hhmm");
-                string extension = "csv";
-                var fullPath = $"{directoryPath}\\{fileNameSuffix}_" +
-                    $"{dateDayPart}_" +
-                    $"{dareTimePart}.{extension}";
+
+                var fullPath = CombineFullPathToExport(directoryPath, aggregatedTrade);
 
                 if (!Directory.Exists(directoryPath))
                 {
@@ -42,18 +36,32 @@ namespace TradingSystem
             }
         }
 
+        private string CombineFullPathToExport(string directoryPath, PowerTrade aggregatedTrade)
+        {
+            string dateDayPart = aggregatedTrade.CreatedDate.ToString("yyyyMMdd");
+            string dateTimePart = aggregatedTrade.CreatedDate.TimeOfDay.ToString("hhmm");
+            string extension = "csv";
+            return $"{directoryPath}\\PowerPosition_" +
+                    $"{dateDayPart}_" +
+                    $"{dateTimePart}.{extension}";
+        }
+
         private List<ReportPeriod> EnrichData(PowerTrade aggregatedTrade)
         {
             var enrichedData = new List<ReportPeriod>();
-
+            var beginningOfReportingDay = CalculateBegginingOfReportingDay(aggregatedTrade.Date);
             for (int i = 0; i < aggregatedTrade.Volumes.Count(); i++)
             {
-                //TODO - handle -1 hour correctly
-                string time = aggregatedTrade.Date.Add(TimeSpan.FromHours(i - 1)).TimeOfDay.ToString(@"hh\:mm");
-                enrichedData.Add(new ReportPeriod { Period = time, Value = aggregatedTrade.Volumes[i] });
+                string timePeriod = beginningOfReportingDay.Add(TimeSpan.FromHours(i)).TimeOfDay.ToString(@"hh\:mm");
+                enrichedData.Add(new ReportPeriod { Period = timePeriod, Value = aggregatedTrade.Volumes[i] });
             }
 
             return enrichedData;
+        }
+
+        private DateTime CalculateBegginingOfReportingDay(DateTime dateTime)
+        {
+            return dateTime.AddDays(-1).Add(ReporterConfiguration.ReportingDayStartOffset);
         }
     }
 }

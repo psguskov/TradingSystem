@@ -30,19 +30,22 @@ namespace TradingSystem
             try
             {
                 _log.Info("Report generation started");
-                var tradesData = _powerTradesDataProvider.GetData(dateTime);
 
-                var validationResult = _powerTradesManager.Validate(tradesData);
+                var treportingDate = ReportingDayHelper.CalculateReportingDate(dateTime, ReporterConfiguration.ReportingDayStartOffset);
+
+                var trades = _powerTradesDataProvider.GetTrades(treportingDate);
+
+                var validationResult = _powerTradesManager.Validate(trades);
                 if (validationResult == false)
                 {
                     throw new Exception("Trade positions validation failed");
                 }
 
                 // Calculate result trades
-                var aggregatedTrade = _powerTradesManager.Aggregate(tradesData);
+                var aggregatedTrade = _powerTradesManager.Aggregate(trades);
 
                 //Export result
-                _powerTradesReportExporter.Export(aggregatedTrade);
+                _powerTradesReportExporter.Export(aggregatedTrade, ReporterConfiguration.ReportDirectory);
                 _log.Info("Report generation finished");
             }
             catch(Exception e)

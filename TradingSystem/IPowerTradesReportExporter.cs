@@ -2,6 +2,6 @@
 {
     public interface IPowerTradesReportExporter
     {
-        void Export(PowerTrade aggregatedTrade);
+        void Export(PowerTrade aggregatedTrade, string path);
     }
 }

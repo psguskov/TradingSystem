@@ -21,11 +21,14 @@ namespace TradingSystem
                     .WithIdentity(typeof(ReportingJob).Name, SchedulerConstants.DefaultGroup)
                     .Build();
 
+            // Schedule - run every N minutes
+            var schedule = $"0 0/{ReporterConfiguration.ReportingInterval} * * * ?"; 
+
             ITrigger trigger = TriggerBuilder
                                 .Create()
                                 .WithIdentity("simpletrigger", SchedulerConstants.DefaultGroup)
-                                .WithCronSchedule(("0/20 * * * * ?"))
-                                .StartAt(DateTime.UtcNow)
+                                .WithCronSchedule(schedule)
+                                .StartAt(DateTime.Now)
                                 .Build();
 
             Scheduler.ScheduleJob(job, trigger);
