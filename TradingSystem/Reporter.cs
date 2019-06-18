@@ -33,18 +33,12 @@ namespace TradingSystem
 
                 var treportingDate = ReportingDayHelper.CalculateReportingDate(dateTime, ReporterConfiguration.ReportingDayStartOffset);
 
-                var trades = _powerTradesDataProvider.GetTrades(treportingDate);
+                var trades = _powerTradesDataProvider.GetPowerTrades(treportingDate);
 
-                var validationResult = _powerTradesManager.Validate(trades);
-                if (validationResult == false)
-                {
-                    throw new Exception("Trade positions validation failed");
-                }
+                _powerTradesManager.Validate(trades);
 
-                // Calculate result trades
                 var aggregatedTrade = _powerTradesManager.Aggregate(trades);
 
-                //Export result
                 _powerTradesReportExporter.Export(aggregatedTrade, ReporterConfiguration.ReportDirectory);
                 _log.Info("Report generation finished");
             }

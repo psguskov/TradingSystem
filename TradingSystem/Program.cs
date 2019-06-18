@@ -42,6 +42,7 @@ namespace TradingSystem
             containerBuilder.RegisterType<PowerTradesReportExporter>().As<IPowerTradesReportExporter>().SingleInstance();
             containerBuilder.RegisterType<PowerTradesManager>().As<IPowerTradesManager>().SingleInstance();
             containerBuilder.RegisterType<Reporter>().As<IReporter>().SingleInstance();
+            containerBuilder.RegisterType<TraidingPlatformConnector>().As<ITraidingPlatformConnector>().SingleInstance();
 
             IContainer container = containerBuilder.Build();
 

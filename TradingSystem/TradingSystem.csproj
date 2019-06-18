@@ -82,6 +82,7 @@
     <Compile Include="IPowerTradesReportExporter.cs" />
     <Compile Include="IPowerTradingService.cs" />
     <Compile Include="IReporter.cs" />
+    <Compile Include="ITraidingPlatformConnector.cs" />
     <Compile Include="ReportPeriod.cs" />
     <Compile Include="PowerTrade.cs" />
     <Compile Include="PowerTradesDataProvider.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="ReporterConfiguration.cs" />
     <Compile Include="ReportingJob.cs" />
     <Compile Include="ReportingDayHelper.cs" />
+    <Compile Include="TraidingPlatformConnector.cs" />
     <Compile Include="TraidingSystemService.cs" />
   </ItemGroup>
   <ItemGroup>

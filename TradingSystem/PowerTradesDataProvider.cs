@@ -9,41 +9,27 @@ namespace TradingSystem
 {
     public class PowerTradesDataProvider : IPowerTradesDataProvider
     {
-        TradingService _tradingService;
+        ITraidingPlatformConnector _tradingPlatformConnector;
+        IPowerTradesManager _powerTradesManager;
 
-        public PowerTradesDataProvider()
+        public PowerTradesDataProvider(ITraidingPlatformConnector tradingPlatformConnector,
+             IPowerTradesManager powerTradesManager)
         {
-            _tradingService = new TradingService();
+            _tradingPlatformConnector = tradingPlatformConnector;
+            _powerTradesManager = powerTradesManager;
         }
 
-        public IEnumerable<PowerTrade> GetTrades(DateTime date)
+        public IEnumerable<PowerTrade> GetPowerTrades(DateTime date)
         {
             try
             {
-                var tradePositions = _tradingService.GetTrades(date);
-                return MapTrades(tradePositions);
+                var tradePositions = _tradingPlatformConnector.GetTrades(date);
+                return _powerTradesManager.MapTrades(tradePositions);
             }
             catch (Exception e)
             {
                 throw new Exception("Error when getting trades: " + e.Message);
             }
-        }
-
-        private IEnumerable<PowerTrade> MapTrades(IEnumerable<Trade> trades)
-        {
-            var powerTrades = new List<PowerTrade>();
-
-            foreach (var trade in trades)
-            {
-                var powerTraid = new PowerTrade(trade.Periods.Count());
-                powerTraid.Date = trade.Date;
-                foreach (var period in trade.Periods)
-                {
-                    powerTraid.AddVolumeByPeriod(period.Period, period.Volume);
-                }
-                powerTrades.Add(powerTraid);
-            }
-            return powerTrades;
         }
     }
 }

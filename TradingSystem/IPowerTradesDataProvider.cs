@@ -5,6 +5,6 @@ namespace TradingSystem
 {
     public interface IPowerTradesDataProvider
     {
-        IEnumerable<PowerTrade> GetTrades(DateTime date);
+        IEnumerable<PowerTrade> GetPowerTrades(DateTime date);
     }
 }
