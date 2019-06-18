@@ -10,12 +10,16 @@ namespace TradingSystem
 {
     public class ReportingJob : IJob
     {
-        private ILog Log { get; }
+        private ILog _log { get; }
+        private IReporter _reporter;
 
-        public ReportingJob(ILog log) =>
-            Log = log ?? throw new ArgumentNullException(nameof(log));
+        public ReportingJob(ILog log, IReporter reporter)
+        {
+            _log = log ?? throw new ArgumentNullException(nameof(log));
+            _reporter = reporter;
+        }
 
         public Task Execute(IJobExecutionContext context) =>
-            Task.Run(() => Log.Info("Hi from MyJob"));
+            Task.Run(() => _reporter.GenerateReport(DateTime.Now));
     }
 }

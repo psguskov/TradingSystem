@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Configuration;
 using Topshelf.Logging;
 using log4net;
+using TradingPlatform;
 
 namespace TradingSystem
 {
@@ -36,6 +37,11 @@ namespace TradingSystem
 
             containerBuilder.Register(c => LogManager.GetLogger(typeof(Object))).As<ILog>();
 
+            //containerBuilder.RegisterType<TradingService>().As<IPowerTradingService>().SingleInstance();
+            containerBuilder.RegisterType<PowerTradesDataProvider>().As<IPowerTradesDataProvider>().SingleInstance();
+            containerBuilder.RegisterType<PowerTradesReportExporter>().As<IPowerTradesReportExporter>().SingleInstance();
+            containerBuilder.RegisterType<PowerTradesManager>().As<IPowerTradesManager>().SingleInstance();
+            containerBuilder.RegisterType<Reporter>().As<IReporter>().SingleInstance();
 
             IContainer container = containerBuilder.Build();
 

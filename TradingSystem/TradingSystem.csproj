@@ -39,6 +39,9 @@
     <Reference Include="Autofac.Extras.Quartz, Version=4.5.1.0, Culture=neutral, PublicKeyToken=595f708ada5feacc, processorArchitecture=MSIL">
       <HintPath>packages\Autofac.Extras.Quartz.4.5.1\lib\net452\Autofac.Extras.Quartz.dll</HintPath>
     </Reference>
+    <Reference Include="CsvHelper, Version=12.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>packages\CsvHelper.12.1.2\lib\net45\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -51,6 +54,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.ValueTuple.4.4.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,10 +72,24 @@
     <Reference Include="Topshelf.Log4Net, Version=4.2.0.194, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
       <HintPath>packages\Topshelf.Log4Net.4.2.0\lib\net452\Topshelf.Log4Net.dll</HintPath>
     </Reference>
+    <Reference Include="TradingPlatform">
+      <HintPath>.\TradingPlatform.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPowerTradesDataProvider.cs" />
+    <Compile Include="IPowerTradesManager.cs" />
+    <Compile Include="IPowerTradesReportExporter.cs" />
+    <Compile Include="IPowerTradingService.cs" />
+    <Compile Include="IReporter.cs" />
+    <Compile Include="Period.cs" />
+    <Compile Include="PowerTrade.cs" />
+    <Compile Include="PowerTradesDataProvider.cs" />
+    <Compile Include="PowerTradesManager.cs" />
+    <Compile Include="PowerTradesReportExporter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reporter.cs" />
     <Compile Include="ReportingJob.cs" />
     <Compile Include="TraidingSystemService.cs" />
   </ItemGroup>
