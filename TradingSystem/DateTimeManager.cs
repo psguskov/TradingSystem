@@ -21,7 +21,7 @@ namespace TradingSystem
             var beginningOfReportingDay = CalculateBegginingOfReportingDayUtc(aggregatedTrade.Date);
             for (int i = 0; i < aggregatedTrade.Volumes.Count(); i++)
             {
-                var localDateTime = beginningOfReportingDay.Add(TimeSpan.FromHours(i));
+                var localDateTime = beginningOfReportingDay.Add(TimeSpan.FromHours(i)).ToLocalTime();
                 string timePeriod = localDateTime.TimeOfDay.ToString(@"hh\:mm");
                 enrichedData.Add(new ReportPeriod { Period = timePeriod, Value = aggregatedTrade.Volumes[i] });
             }
@@ -29,17 +29,9 @@ namespace TradingSystem
             return enrichedData;
         }
 
-        public static void ConvertPowerTradeDateTimeToLocal(PowerTrade powerTradeWithUtcDateTime)
-        {
-            var createdDateLocal = powerTradeWithUtcDateTime.CreatedDate.ToLocalTime();
-            var dateLocal = powerTradeWithUtcDateTime.Date.ToLocalTime();
-            powerTradeWithUtcDateTime.CreatedDate = createdDateLocal;
-            powerTradeWithUtcDateTime.Date = dateLocal;
-        }
-
         public static DateTime CalculateBegginingOfReportingDayUtc(DateTime dateTimeLocal)
         {
-            var begginingOfReportingDayUtc = dateTimeLocal.AddDays(-1).Add(ReporterConfiguration.ReportingDayStartOffset);
+            var begginingOfReportingDayUtc = dateTimeLocal.AddDays(-1).Add(new ReporterConfiguration().GetReportingDayStartOffset());
             return begginingOfReportingDayUtc.ToUniversalTime();
         }
     }

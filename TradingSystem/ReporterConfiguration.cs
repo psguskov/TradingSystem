@@ -7,40 +7,32 @@ using System.Threading.Tasks;
 
 namespace TradingSystem
 {
-    public static class ReporterConfiguration
+    public class ReporterConfiguration : IReporterConfiguration
     {
-        private static string ReportDirectoryDefault => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        private static int ReportingIntervalDefault => 5;
-        private static TimeSpan ReportingDayStartDefault => TimeSpan.FromHours(23);
-
-        public static string ReportDirectory => GetReportDirectory();
-        public static int ReportingInterval => GetReportingInterval();
-        public static TimeSpan ReportingDayStartOffset => GetReportingDayStartOffset();
-
-        private static string GetReportDirectory()
+        public string GetReportDirectory()
         {
             var path = ConfigurationManager.AppSettings["directoryPath"];
-            return !String.IsNullOrWhiteSpace(path) ? path : ReportDirectoryDefault;
-
+            return !String.IsNullOrWhiteSpace(path) ? path
+                : Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         }
 
-        private static int GetReportingInterval()
+        public int GetReportingInterval()
         {
             var intervalValue = ConfigurationManager.AppSettings["reportingIntervalInMinutes"];
             return (!string.IsNullOrWhiteSpace(intervalValue)
                 && int.TryParse(intervalValue, out int interval)
                 && interval > 0)
                 ? interval
-                : ReportingIntervalDefault;
+                : 5;
         }
 
-        private static TimeSpan GetReportingDayStartOffset()
+        public TimeSpan GetReportingDayStartOffset()
         {
             var reportingDayStartValue = ConfigurationManager.AppSettings["reportingDayStartOffset"];
             return (!string.IsNullOrWhiteSpace(reportingDayStartValue)
                 && TimeSpan.TryParse(reportingDayStartValue, out TimeSpan dayStart))
                 ? dayStart
-                : ReportingDayStartDefault;
+                : TimeSpan.FromHours(23);
         }
     }
 }

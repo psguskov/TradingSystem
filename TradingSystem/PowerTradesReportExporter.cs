@@ -15,8 +15,6 @@ namespace TradingSystem
         {
             try
             {
-                DateTimeManager.ConvertPowerTradeDateTimeToLocal(aggregatedTrade);
-
                 var data = DateTimeManager.EnrichDataWithDates(aggregatedTrade);
 
                 var fullPath = CombineFullPathToExport(directoryPath, aggregatedTrade);
@@ -47,6 +45,7 @@ namespace TradingSystem
 
         private string CombineFullPathToExport(string directoryPath, PowerTrade aggregatedTrade, string suffix = "")
         {
+            DateTime dateToExport = aggregatedTrade.CreatedDate.ToLocalTime();
             string dateDayPart = aggregatedTrade.CreatedDate.ToString("yyyyMMdd");
             string dateTimePart = aggregatedTrade.CreatedDate.TimeOfDay.ToString("hhmm");
             string extension = "csv";

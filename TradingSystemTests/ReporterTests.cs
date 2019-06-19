@@ -11,16 +11,18 @@ namespace TradingSystemTests
     [TestFixture]
     public class ReporterTests
     {
-        Mock<IPowerTradesDataProvider> _powerTradesDataProviderMock;
-        Mock<IPowerTradesManager> _powerTradesManagerMock;
-        Mock<IPowerTradesReportExporter> _powerTradesReportExporterMock;
-        Mock<ILog> _logMock;
+        private Mock<IPowerTradesDataProvider> _powerTradesDataProviderMock;
+        private Mock<IPowerTradesManager> _powerTradesManagerMock;
+        private Mock<IPowerTradesReportExporter> _powerTradesReportExporterMock;
+        private Mock<IReporterConfiguration> _reporterConfigurationMock;
+        private Mock<ILog> _logMock;
 
         public ReporterTests()
         {
             _powerTradesDataProviderMock = new Mock<IPowerTradesDataProvider>();
             _powerTradesManagerMock = new Mock<IPowerTradesManager>();
             _powerTradesReportExporterMock = new Mock<IPowerTradesReportExporter>();
+            _reporterConfigurationMock = new Mock<IReporterConfiguration>();
             _logMock = new Mock<ILog>();
         }
 
@@ -37,9 +39,11 @@ namespace TradingSystemTests
             _powerTradesManagerMock.Setup(m => m.Aggregate(It.IsAny<IEnumerable<PowerTrade>>())).Returns(aggregatedPowerTrade).Verifiable();
             _powerTradesManagerMock.Setup(m => m.Validate(It.IsAny<IEnumerable<PowerTrade>>())).Verifiable();
             _powerTradesReportExporterMock.Setup(re => re.Export(It.IsAny<PowerTrade>(), It.IsAny<string>())).Verifiable();
+            _reporterConfigurationMock.Setup(c => c.GetReportingDayStartOffset()).Returns(It.IsAny<TimeSpan>());
+            _reporterConfigurationMock.Setup(c => c.GetReportDirectory()).Returns(It.IsAny<string>());
 
             var reporter = new Reporter(_powerTradesDataProviderMock.Object, _powerTradesManagerMock.Object,
-                _powerTradesReportExporterMock.Object, _logMock.Object);
+                _powerTradesReportExporterMock.Object, _reporterConfigurationMock.Object, _logMock.Object);
 
             // Act
             // Assert

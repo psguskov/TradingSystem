@@ -7,6 +7,11 @@ using TradingPlatform;
 
 namespace TradingSystem
 {
+    /// <summary>
+    /// Connector to 3rd-party datasource. 
+    /// It is required to incapsulate communication with TradingService because of 
+    /// ITradingService has internal protection level
+    /// </summary>
     public class TraidingPlatformConnector : ITraidingPlatformConnector
     {
 

@@ -46,5 +46,27 @@ namespace TradingSystemTests
             var beginingOfDayUtc = DateTimeManager.CalculateBegginingOfReportingDayUtc(powerTrade.Date).TimeOfDay;
             Assert.AreEqual(firstTimePeriod, beginingOfDayUtc);
         }
+
+        [TestCase("10/27/2019 00:00:00.000")] // London long day
+        [TestCase("10/26/2014 00:00:00.000")] // Russia long day
+        public void EnrichDataLongDay_Expected_LastPeriodIsNotDuplicateOfFirstPeriod(DateTime date)
+        {
+            // Arrange
+            PowerTrade powerTrade;
+            if (TimeZoneInfo.Local.IsDaylightSavingTime(date))
+            {
+                powerTrade = TestHelper.BuildPowerTradesCollection(1, 25, date).First();
+            }
+            else
+            {
+                powerTrade = TestHelper.BuildPowerTradesCollection(1, 24, date).First();
+            }
+
+            // Act
+            var result = DateTimeManager.EnrichDataWithDates(powerTrade);
+
+            // Assert
+            Assert.AreNotEqual(result.First().Period, result.Last().Period);
+        }
     }
 }

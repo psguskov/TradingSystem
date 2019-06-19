@@ -12,8 +12,8 @@ namespace TradingSystemTests
     [TestFixture]
     public class PowerTradesDataProviderTests
     {
-        Mock<ITraidingPlatformConnector> _tradingPlatformConnectorMock;
-        Mock<IPowerTradesManager> _powerTradesManagerMock;
+        private Mock<ITraidingPlatformConnector> _tradingPlatformConnectorMock;
+        private Mock<IPowerTradesManager> _powerTradesManagerMock;
 
         public PowerTradesDataProviderTests()
         {

@@ -9,10 +9,14 @@ namespace TradingSystem
 {
     public class TraidingSystemService
     {
-        private IScheduler Scheduler { get; }
+        private IScheduler _scheduler { get; }
+        private IReporterConfiguration _reporterConfiguration;
 
-        public TraidingSystemService(IScheduler scheduler) =>
-            Scheduler = scheduler ?? throw new ArgumentNullException(nameof(scheduler));
+        public TraidingSystemService(IScheduler scheduler, IReporterConfiguration reporterConfiguration)
+        {
+            _scheduler = scheduler;
+            _reporterConfiguration = reporterConfiguration;
+        }
 
         public void OnStart()
         {
@@ -22,7 +26,8 @@ namespace TradingSystem
                     .Build();
 
             // Schedule - run every N minutes
-            var schedule = $"0 0/{ReporterConfiguration.ReportingInterval} * * * ?"; 
+            var interval = _reporterConfiguration.GetReportingInterval();
+            var schedule = $"0 0/{interval} * * * ?";
 
             ITrigger trigger = TriggerBuilder
                                 .Create()
@@ -31,17 +36,17 @@ namespace TradingSystem
                                 .StartAt(DateTime.UtcNow)
                                 .Build();
 
-            Scheduler.ScheduleJob(job, trigger);
-            Scheduler.Start();
+            _scheduler.ScheduleJob(job, trigger);
+            _scheduler.Start();
         }
 
         public void OnPaused() =>
-            Scheduler.PauseAll();
+            _scheduler.PauseAll();
 
         public void OnContinue() =>
-            Scheduler.ResumeAll();
+            _scheduler.ResumeAll();
 
         public void OnStop() =>
-            Scheduler.Shutdown();
+            _scheduler.Shutdown();
     }
 }

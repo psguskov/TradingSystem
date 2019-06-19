@@ -9,19 +9,22 @@ namespace TradingSystem
 {
     public class Reporter : IReporter
     {
-        IPowerTradesDataProvider _powerTradesDataProvider;
-        IPowerTradesManager _powerTradesManager;
-        IPowerTradesReportExporter _powerTradesReportExporter;
-        ILog _log;
+        private IPowerTradesDataProvider _powerTradesDataProvider;
+        private IPowerTradesManager _powerTradesManager;
+        private IPowerTradesReportExporter _powerTradesReportExporter;
+        private IReporterConfiguration _reporterConfiguration;
+        private ILog _log;
 
         public Reporter(IPowerTradesDataProvider powerTradesDataProvider, 
                         IPowerTradesManager powerTradesManager,
                         IPowerTradesReportExporter powerTradesReportExporter,
+                        IReporterConfiguration reporterConfiguration,
                         ILog log)
         {
             _powerTradesDataProvider = powerTradesDataProvider;
             _powerTradesManager = powerTradesManager;
             _powerTradesReportExporter = powerTradesReportExporter;
+            _reporterConfiguration = reporterConfiguration;
             _log = log;
         }
 
@@ -29,7 +32,8 @@ namespace TradingSystem
         {
             _log.Info("Report generation started");
 
-            var reportingDate = DateTimeManager.CalculateReportingDate(dateTimeUtc, ReporterConfiguration.ReportingDayStartOffset);
+            var reportingDate = DateTimeManager.CalculateReportingDate(dateTimeUtc, 
+                _reporterConfiguration.GetReportingDayStartOffset());
 
             var trades = _powerTradesDataProvider.GetPowerTrades(reportingDate);
 
@@ -37,7 +41,7 @@ namespace TradingSystem
 
             var aggregatedTrade = _powerTradesManager.Aggregate(trades);
 
-            _powerTradesReportExporter.Export(aggregatedTrade, ReporterConfiguration.ReportDirectory);
+            _powerTradesReportExporter.Export(aggregatedTrade, _reporterConfiguration.GetReportDirectory());
 
             _log.Info("Report generation finished");
         }

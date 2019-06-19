@@ -13,7 +13,7 @@ namespace TradingSystemTests
     [TestFixture]
     public class PowerTradesManagerTests
     {
-        IPowerTradesManager _manager;
+        private IPowerTradesManager _manager;
 
         public PowerTradesManagerTests()
         {
@@ -52,7 +52,7 @@ namespace TradingSystemTests
             var periodsCount = TestHelper.GenerateIntFrom1To99();
             var date = new Fixture().Create<DateTime>();
             var powerTrades = TestHelper.BuildPowerTradesCollection(tradesCount, periodsCount, date);
-            powerTrades.FirstOrDefault().Date = date.AddDays(-1);
+            powerTrades.FirstOrDefault().Date = date.AddDays(-10);
 
             // Assert
             Assert.Throws(typeof(ArgumentException), () => _manager.Validate(powerTrades));

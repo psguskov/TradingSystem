@@ -9,8 +9,8 @@ namespace TradingSystem
 {
     public class PowerTradesDataProvider : IPowerTradesDataProvider
     {
-        ITraidingPlatformConnector _tradingPlatformConnector;
-        IPowerTradesManager _powerTradesManager;
+        private ITraidingPlatformConnector _tradingPlatformConnector;
+        private IPowerTradesManager _powerTradesManager;
 
         public PowerTradesDataProvider(ITraidingPlatformConnector tradingPlatformConnector,
              IPowerTradesManager powerTradesManager)

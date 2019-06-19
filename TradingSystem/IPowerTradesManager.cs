@@ -7,7 +7,6 @@ namespace TradingSystem
     {
         void Validate(IEnumerable<PowerTrade> powerTrades);
         PowerTrade Aggregate(IEnumerable<PowerTrade> powerTrades);
-        void AddVolumeByPeriod(double[] volumes, int period, double volume);
         IEnumerable<PowerTrade> MapTrades(IEnumerable<Trade> trades);
     }
 }

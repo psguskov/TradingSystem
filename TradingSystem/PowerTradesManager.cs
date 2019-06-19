@@ -50,7 +50,7 @@ namespace TradingSystem
             return resultTrade;
         }
 
-        public void AddVolumeByPeriod(double[] volumes, int period, double volume)
+        private void AddVolumeByPeriod(double[] volumes, int period, double volume)
         {
             if (period < 1 || period > volumes.Length)
             {
@@ -65,13 +65,13 @@ namespace TradingSystem
 
             foreach (var trade in trades)
             {
-                var powerTraid = new PowerTrade(trade.Periods.Count());
-                powerTraid.Date = trade.Date;
+                var powerTrade = new PowerTrade(trade.Periods.Count());
+                powerTrade.Date = trade.Date;
                 foreach (var period in trade.Periods)
                 {
-                    AddVolumeByPeriod(powerTraid.Volumes, period.Period, period.Volume);
+                    AddVolumeByPeriod(powerTrade.Volumes, period.Period, period.Volume);
                 }
-                powerTrades.Add(powerTraid);
+                powerTrades.Add(powerTrade);
             }
             return powerTrades;
         }
