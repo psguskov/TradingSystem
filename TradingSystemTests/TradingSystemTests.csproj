@@ -81,6 +81,7 @@
     <Compile Include="PowerTradesManagerTests.cs" />
     <Compile Include="ReporterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportingHelperTests.cs" />
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>

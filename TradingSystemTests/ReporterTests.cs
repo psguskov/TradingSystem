@@ -43,7 +43,7 @@ namespace TradingSystemTests
 
             // Act
             // Assert
-            Assert.DoesNotThrow(() => reporter.GenerateReport(DateTime.Now));
+            Assert.DoesNotThrow(() => reporter.GenerateReport(DateTime.UtcNow));
             _powerTradesDataProviderMock.Verify();
             _powerTradesManagerMock.Verify();
             _powerTradesReportExporterMock.Verify();

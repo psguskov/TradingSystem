@@ -93,7 +93,7 @@
     <Compile Include="Reporter.cs" />
     <Compile Include="ReporterConfiguration.cs" />
     <Compile Include="ReportingJob.cs" />
-    <Compile Include="ReportingDayHelper.cs" />
+    <Compile Include="ReportingHelper.cs" />
     <Compile Include="TraidingPlatformConnector.cs" />
     <Compile Include="TraidingSystemService.cs" />
   </ItemGroup>

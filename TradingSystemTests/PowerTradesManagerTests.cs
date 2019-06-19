@@ -58,9 +58,8 @@ namespace TradingSystemTests
             Assert.Throws(typeof(ArgumentException), () => _manager.Validate(powerTrades));
         }
 
-        // TODO
         [Test]
-        public void GetTradesByDate_Expect_NoException()
+        public void MapTradeToPowerTrade_Expect_EqualsValues()
         {
             // Arrange
             var tradesCount = 1;
@@ -84,6 +83,25 @@ namespace TradingSystemTests
                     }
                 }
             }
+        }
+
+        [Test]
+        public void AggregateTrades_Expect_TradeWithSummarizedReriodValues()
+        {
+            // Arrange
+            var tradesCount = 2;
+            var periodsCount = 2;
+            var date = new Fixture().Create<DateTime>();
+            var powerTrades = TestHelper.BuildPowerTradesCollection(tradesCount, periodsCount, date).ToList();
+
+            // Act
+            var aggregatedPowerTrade = _manager.Aggregate(powerTrades);
+
+            // Assert
+            Assert.AreEqual(aggregatedPowerTrade.Date, powerTrades[0].Date);
+            Assert.AreEqual(aggregatedPowerTrade.Date, powerTrades[1].Date);
+            Assert.AreEqual(aggregatedPowerTrade.Volumes[0], powerTrades[0].Volumes[0] + powerTrades[1].Volumes[0]);
+            Assert.AreEqual(aggregatedPowerTrade.Volumes[1], powerTrades[0].Volumes[1] + powerTrades[1].Volumes[1]);
         }
     }
 }

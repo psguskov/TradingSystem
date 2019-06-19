@@ -28,7 +28,7 @@ namespace TradingSystem
                                 .Create()
                                 .WithIdentity("simpletrigger", SchedulerConstants.DefaultGroup)
                                 .WithCronSchedule(schedule)
-                                .StartAt(DateTime.Now)
+                                .StartAt(DateTime.UtcNow)
                                 .Build();
 
             Scheduler.ScheduleJob(job, trigger);

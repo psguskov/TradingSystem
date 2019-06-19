@@ -19,7 +19,18 @@ namespace TradingSystem
             _reporter = reporter;
         }
 
-        public Task Execute(IJobExecutionContext context) =>
-            Task.Run(() => _reporter.GenerateReport(DateTime.Now));
+        public Task Execute(IJobExecutionContext context)
+        {
+            try
+            {
+                return Task.Run(() => _reporter.GenerateReport(DateTime.UtcNow));
+            }
+            catch (Exception ex)
+            {
+                JobExecutionException qe = new JobExecutionException(ex);
+                qe.RefireImmediately = true; 
+                throw qe;
+            }
+        }
     }
 }

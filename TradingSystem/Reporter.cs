@@ -25,28 +25,21 @@ namespace TradingSystem
             _log = log;
         }
 
-        public void GenerateReport(DateTime dateTime)
+        public void GenerateReport(DateTime dateTimeUtc)
         {
-            try
-            {
-                _log.Info("Report generation started");
+            _log.Info("Report generation started");
 
-                var treportingDate = ReportingDayHelper.CalculateReportingDate(dateTime, ReporterConfiguration.ReportingDayStartOffset);
+            var reportingDate = ReportingHelper.CalculateReportingDate(dateTimeUtc, ReporterConfiguration.ReportingDayStartOffset);
 
-                var trades = _powerTradesDataProvider.GetPowerTrades(treportingDate);
+            var trades = _powerTradesDataProvider.GetPowerTrades(reportingDate);
 
-                _powerTradesManager.Validate(trades);
+            _powerTradesManager.Validate(trades);
 
-                var aggregatedTrade = _powerTradesManager.Aggregate(trades);
+            var aggregatedTrade = _powerTradesManager.Aggregate(trades);
 
-                _powerTradesReportExporter.Export(aggregatedTrade, ReporterConfiguration.ReportDirectory);
-                _log.Info("Report generation finished");
-            }
-            catch(Exception e)
-            {
-                _log.Error("Report generation failed", e.InnerException);
-                throw;
-            }
+            _powerTradesReportExporter.Export(aggregatedTrade, ReporterConfiguration.ReportDirectory);
+
+            _log.Info("Report generation finished");
         }
     }
 }

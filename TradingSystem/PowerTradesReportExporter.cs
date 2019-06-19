@@ -15,7 +15,7 @@ namespace TradingSystem
         {
             try
             {
-                var data = EnrichData(aggregatedTrade);
+                var data = ReportingHelper.EnrichData(aggregatedTrade);
 
                 var fullPath = CombineFullPathToExport(directoryPath, aggregatedTrade);
 
@@ -44,24 +44,6 @@ namespace TradingSystem
             return $"{directoryPath}\\PowerPosition_" +
                     $"{dateDayPart}_" +
                     $"{dateTimePart}.{extension}";
-        }
-
-        private List<ReportPeriod> EnrichData(PowerTrade aggregatedTrade)
-        {
-            var enrichedData = new List<ReportPeriod>();
-            var beginningOfReportingDay = CalculateBegginingOfReportingDay(aggregatedTrade.Date);
-            for (int i = 0; i < aggregatedTrade.Volumes.Count(); i++)
-            {
-                string timePeriod = beginningOfReportingDay.Add(TimeSpan.FromHours(i)).TimeOfDay.ToString(@"hh\:mm");
-                enrichedData.Add(new ReportPeriod { Period = timePeriod, Value = aggregatedTrade.Volumes[i] });
-            }
-
-            return enrichedData;
-        }
-
-        private DateTime CalculateBegginingOfReportingDay(DateTime dateTime)
-        {
-            return dateTime.AddDays(-1).Add(ReporterConfiguration.ReportingDayStartOffset);
         }
     }
 }
