@@ -29,7 +29,7 @@ namespace TradingSystem
         {
             _log.Info("Report generation started");
 
-            var reportingDate = ReportingHelper.CalculateReportingDate(dateTimeUtc, ReporterConfiguration.ReportingDayStartOffset);
+            var reportingDate = DateTimeManager.CalculateReportingDate(dateTimeUtc, ReporterConfiguration.ReportingDayStartOffset);
 
             var trades = _powerTradesDataProvider.GetPowerTrades(reportingDate);
 

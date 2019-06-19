@@ -11,7 +11,7 @@ using TradingSystem;
 namespace TradingSystemTests
 {
     [TestFixture]
-    public class ReportingHelperTests
+    public class DateTimeManagerTests
     {
         [TestCase("23:00", "2019-3-30 22:00", "2019-3-30 00:00")]
         [TestCase("23:00", "2019-3-30 23:00", "2019-3-31 00:00")]
@@ -25,7 +25,7 @@ namespace TradingSystemTests
             DateTime expextedResult = DateTime.Parse(reportingDay, CultureInfo.InvariantCulture);
 
             // Act
-            DateTime actualResult = ReportingHelper.CalculateReportingDate(now, beginingOfDayTimeSpan);
+            DateTime actualResult = DateTimeManager.CalculateReportingDate(now, beginingOfDayTimeSpan);
 
             // Assert
             Assert.AreEqual(actualResult, expextedResult);
@@ -39,11 +39,12 @@ namespace TradingSystemTests
             powerTrade.Date = powerTrade.Date.Date;
 
             // Act
-            var result = ReportingHelper.EnrichData(powerTrade);
+            var result = DateTimeManager.EnrichDataWithDates(powerTrade);
 
             // Assert
             TimeSpan.TryParse(result.First().Period, out TimeSpan firstTimePeriod);
-            Assert.AreEqual(firstTimePeriod, ReporterConfiguration.ReportingDayStartOffset);
+            var beginingOfDayUtc = DateTimeManager.CalculateBegginingOfReportingDayUtc(powerTrade.Date).TimeOfDay;
+            Assert.AreEqual(firstTimePeriod, beginingOfDayUtc);
         }
     }
 }

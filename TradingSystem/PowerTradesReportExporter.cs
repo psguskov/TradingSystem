@@ -15,7 +15,9 @@ namespace TradingSystem
         {
             try
             {
-                var data = ReportingHelper.EnrichData(aggregatedTrade);
+                DateTimeManager.ConvertPowerTradeDateTimeToLocal(aggregatedTrade);
+
+                var data = DateTimeManager.EnrichDataWithDates(aggregatedTrade);
 
                 var fullPath = CombineFullPathToExport(directoryPath, aggregatedTrade);
 

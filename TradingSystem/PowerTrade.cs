@@ -15,7 +15,7 @@ namespace TradingSystem
         }
 
         public DateTime Date { get; set; }
-        public DateTime CreatedDate { get; private set; }
+        public DateTime CreatedDate { get; set; }
         public double[] Volumes { get; set; }
     }
 }
